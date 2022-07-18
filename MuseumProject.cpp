@@ -6,10 +6,13 @@
 const std::string TEXTURE_PATH = "textures/viking_room.png";*/
 
 // The uniform buffer object used in this example
-struct UniformBufferObject {
-	alignas(16) glm::mat4 model;
+struct globalUniformBufferObject {
 	alignas(16) glm::mat4 view;
 	alignas(16) glm::mat4 proj;
+};
+
+struct UniformBufferObject {
+	alignas(16) glm::mat4 model;
 };
 
 
@@ -19,7 +22,8 @@ class MyProject : public BaseProject {
 	// Here you list all the Vulkan objects you need:
 	
 	// Descriptor Layouts [what will be passed to the shaders]
-	DescriptorSetLayout DSL1;
+	DescriptorSetLayout DSLglobal;
+	DescriptorSetLayout DSLobj;
 
 	// Pipelines [Shader couples]
 	Pipeline P1;
@@ -27,55 +31,57 @@ class MyProject : public BaseProject {
 	// Models, textures and Descriptors (values assigned to the uniforms)
 	Model M_MuseumTri;
 	Texture T_MuseumTri;
-	DescriptorSet DS_MuseumTri;
-
+	DescriptorSet DS_MuseumTri; // instance DSLobj
+	//floor
 	Model M_Floor;
 	Texture T_Floor;
-	DescriptorSet DS_Floor;
+	DescriptorSet DS_Floor; // instance DSLobj
 	//painting 1
 	Model M_Square;
 	Texture T_Square;
-	DescriptorSet DS_Square;
+	DescriptorSet DS_Square; // instance DSLobj
 	//painting 2
 	Model M_Square2;
 	Texture T_Square2;
-	DescriptorSet DS_Square2;
+	DescriptorSet DS_Square2; // instance DSLobj
 	//painting 3
 	Model M_Square3;
 	Texture T_Square3;
-	DescriptorSet DS_Square3;
+	DescriptorSet DS_Square3; // instance DSLobj
 	//painting 4
 	Model M_Square4;
 	Texture T_Square4;
-	DescriptorSet DS_Square4;
+	DescriptorSet DS_Square4; // instance DSLobj
 	//painting 5
 	Model M_Square5;
 	Texture T_Square5;
-	DescriptorSet DS_Square5;
+	DescriptorSet DS_Square5; // instance DSLobj
 	//painting 6
 	Model M_Square6;
 	Texture T_Square6;
-	DescriptorSet DS_Square6;
+	DescriptorSet DS_Square6; // instance DSLobj
 	//painting 7
 	Model M_Square7;
 	Texture T_Square7;
-	DescriptorSet DS_Square7;
+	DescriptorSet DS_Square7; // instance DSLobj
 	//painting 8
 	Model M_Square8;
 	Texture T_Square8;
-	DescriptorSet DS_Square8;
+	DescriptorSet DS_Square8; // instance DSLobj
 	//painting 9
 	Model M_Square9;
 	Texture T_Square9;
-	DescriptorSet DS_Square9;
+	DescriptorSet DS_Square9; // instance DSLobj
 	//painting 10
 	Model M_Square10;
 	Texture T_Square10;
-	DescriptorSet DS_Square10;
+	DescriptorSet DS_Square10; // instance DSLobj
 	//painting 11
 	Model M_Square11;
 	Texture T_Square11;
-	DescriptorSet DS_Square11;
+	DescriptorSet DS_Square11; // instance DSLobj
+
+	DescriptorSet DS_global;
 
 	// Here you set the main application parameters
 	void setWindowParameters() {
@@ -86,15 +92,15 @@ class MyProject : public BaseProject {
 		initialBackgroundColor = {1.0f, 1.0f, 1.0f, 1.0f};
 		
 		// Descriptor pool sizes
-		uniformBlocksInPool = 13;
+		uniformBlocksInPool = 14;
 		texturesInPool = 13;
-		setsInPool = 13;
+		setsInPool = 14;
 	}
 	
 	// Here you load and setup all your Vulkan objects
 	void localInit() {
 		// Descriptor Layouts [what will be passed to the shaders]
-		DSL1.init(this, {
+		DSLobj.init(this, {
 					// this array contains the binding:
 					// first  element : the binding number
 					// second element : the time of element (buffer or texture)
@@ -103,15 +109,19 @@ class MyProject : public BaseProject {
 					{1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT}
 				  });
 
+		DSLglobal.init(this, {
+			{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS},
+			});
+
 		// Pipelines [Shader couples]
 		// The last array, is a vector of pointer to the layouts of the sets that will
 		// be used in this pipeline. The first element will be set 0, and so on..
-		P1.init(this, "shaders/vert.spv", "shaders/frag.spv", {&DSL1});
+		P1.init(this, "shaders/vert.spv", "shaders/frag.spv", {&DSLglobal, &DSLobj});
 
 		// Models, textures and Descriptors (values assigned to the uniforms)
 		M_MuseumTri.init(this, "models/museumTri.obj");
 		T_MuseumTri.init(this, "textures/wall.jpg");
-		DS_MuseumTri.init(this, &DSL1, {
+		DS_MuseumTri.init(this, &DSLobj, {
 		// the second parameter, is a pointer to the Uniform Set Layout of this set
 		// the last parameter is an array, with one element per binding of the set.
 		// first  elmenet : the binding number
@@ -124,86 +134,90 @@ class MyProject : public BaseProject {
 
 		M_Floor.init(this, "models/floor.obj");
 		T_Floor.init(this, "textures/parquet.jpg");
-		DS_Floor.init(this, &DSL1, {
+		DS_Floor.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Floor}
 			});
 
 		M_Square.init(this, "models/Square.obj");
 		T_Square.init(this, "textures/VanGogh_self.jpg");
-		DS_Square.init(this, &DSL1, {
+		DS_Square.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square}
 			});
 
 		M_Square2.init(this, "models/Square.obj");
 		T_Square2.init(this, "textures/Manet_Dejeuner.jpg");
-		DS_Square2.init(this, &DSL1, {
+		DS_Square2.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square2}
 			});
 
 		M_Square3.init(this, "models/Square.obj");
 		T_Square3.init(this, "textures/Matisse_theDance.jpg");
-		DS_Square3.init(this, &DSL1, {
+		DS_Square3.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square3}
 			});
 
 		M_Square4.init(this, "models/Square.obj");
 		T_Square4.init(this, "textures/Monet-Sunrise.jpg");
-		DS_Square4.init(this, &DSL1, {
+		DS_Square4.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square4}
 			});
 
 		M_Square5.init(this, "models/Square.obj");
 		T_Square5.init(this, "textures/Munch_Scream.jpg");
-		DS_Square5.init(this, &DSL1, {
+		DS_Square5.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square5}
 			});
 
 		M_Square6.init(this, "models/Rectangle.obj");
 		T_Square6.init(this, "textures/Picasso_Guernica.jpg");
-		DS_Square6.init(this, &DSL1, {
+		DS_Square6.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square6}
 			});
 
 		M_Square7.init(this, "models/Square.obj");
 		T_Square7.init(this, "textures/pisarro_boulevard_monmarte.jpg");
-		DS_Square7.init(this, &DSL1, {
+		DS_Square7.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square7}
 			});
 
 		M_Square8.init(this, "models/Square.obj");
 		T_Square8.init(this, "textures/Seurat_a_sunday.png");
-		DS_Square8.init(this, &DSL1, {
+		DS_Square8.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square8}
 			});
 
 		M_Square9.init(this, "models/Square.obj");
 		T_Square9.init(this, "textures/starringNight.jpg");
-		DS_Square9.init(this, &DSL1, {
+		DS_Square9.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square9}
 			});
 
 		M_Square10.init(this, "models/Square.obj");
 		T_Square10.init(this, "textures/theBathers_Cezanne.jpg");
-		DS_Square10.init(this, &DSL1, {
+		DS_Square10.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square10}
 			});
 
 		M_Square11.init(this, "models/Square.obj");
 		T_Square11.init(this, "textures/Volpedo_FourthEstate.jpg");
-		DS_Square11.init(this, &DSL1, {
+		DS_Square11.init(this, &DSLobj, {
 						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
 						{1, TEXTURE, 0, &T_Square11}
+			});
+
+		DS_global.init(this, &DSLglobal, {
+						{0, UNIFORM, sizeof(globalUniformBufferObject), nullptr},
 			});
 
 	}
@@ -262,8 +276,11 @@ class MyProject : public BaseProject {
 		T_Square11.cleanup();
 		M_Square11.cleanup();
 
+		DS_global.cleanup();
+
 		P1.cleanup();
-		DSL1.cleanup();
+		DSLglobal.cleanup();
+		DSLobj.cleanup();
 	}
 	
 	// Here it is the creation of the command buffer:
@@ -273,6 +290,10 @@ class MyProject : public BaseProject {
 				
 		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS,
 				P1.graphicsPipeline);
+		vkCmdBindDescriptorSets(commandBuffer,
+			VK_PIPELINE_BIND_POINT_GRAPHICS,
+			P1.pipelineLayout, 0, 1, &DS_global.descriptorSets[currentImage],
+			0, nullptr);
 				
 		VkBuffer vertexBuffersMTri[] = { M_MuseumTri.vertexBuffer};
 		// property .vertexBuffer of models, contains the VkBuffer handle to its vertex buffer
@@ -286,7 +307,7 @@ class MyProject : public BaseProject {
 		// property .descriptorSets of a descriptor set contains its elements.
 		vkCmdBindDescriptorSets(commandBuffer,
 						VK_PIPELINE_BIND_POINT_GRAPHICS,
-						P1.pipelineLayout, 0, 1, &DS_MuseumTri.descriptorSets[currentImage],
+						P1.pipelineLayout, 1, 1, &DS_MuseumTri.descriptorSets[currentImage],
 						0, nullptr);
 						
 		// property .indices.size() of models, contains the number of triangles * 3 of the mesh.
@@ -301,7 +322,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Floor.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Floor.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Floor.indices.size()), 1, 0, 0, 0);
@@ -314,7 +335,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square.indices.size()), 1, 0, 0, 0);
@@ -326,7 +347,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square2.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square2.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square2.indices.size()), 1, 0, 0, 0);
@@ -338,7 +359,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square3.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square3.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square3.indices.size()), 1, 0, 0, 0);
@@ -350,7 +371,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square4.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square4.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square4.indices.size()), 1, 0, 0, 0);
@@ -362,7 +383,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square5.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square5.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square5.indices.size()), 1, 0, 0, 0);
@@ -374,7 +395,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square6.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square6.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square6.indices.size()), 1, 0, 0, 0);
@@ -386,7 +407,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square7.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square7.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square7.indices.size()), 1, 0, 0, 0);
@@ -398,7 +419,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square8.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square8.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square8.indices.size()), 1, 0, 0, 0);
@@ -410,7 +431,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square9.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square9.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square9.indices.size()), 1, 0, 0, 0);
@@ -422,7 +443,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square10.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square10.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square10.indices.size()), 1, 0, 0, 0);
@@ -434,7 +455,7 @@ class MyProject : public BaseProject {
 			VK_INDEX_TYPE_UINT32);
 		vkCmdBindDescriptorSets(commandBuffer,
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
-			P1.pipelineLayout, 0, 1, &DS_Square11.descriptorSets[currentImage],
+			P1.pipelineLayout, 1, 1, &DS_Square11.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square11.indices.size()), 1, 0, 0, 0);
@@ -492,33 +513,30 @@ class MyProject : public BaseProject {
 			glm::mat3(glm::rotate(glm::mat4(1.0f), CamAng.z, glm::vec3(0.0f, 0.0f, 1.0f)));
 					
 		UniformBufferObject ubo{};
+		globalUniformBufferObject gubo{};
 		
-		/*ubo.view = glm::lookAt(glm::vec3(-CamPos.x, -CamPos.y, -CamPos.z),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 1.0f, 0.0f)); */
-		
-		ubo.view =
+		void* data;
+
+		gubo.view =
 			glm::rotate(glm::mat4(1.0), -CamAng.z, glm::vec3(0, 0, 1)) *
 			glm::rotate(glm::mat4(1.0), -CamAng.x, glm::vec3(1, 0, 0)) *
 			glm::rotate(glm::mat4(1.0), -CamAng.y, glm::vec3(0, 1, 0)) *
 			glm::translate(glm::mat4(1.0), glm::vec3(-CamPos.x, -CamPos.y, -CamPos.z));
 		;
-		//ubo.view = glm::translate(glm::transpose(glm::mat4(CamDir)), -CamPos);
-
-		ubo.proj = glm::perspective(glm::radians(90.0f),
+		
+		gubo.proj = glm::perspective(glm::radians(90.0f),
 						swapChainExtent.width / (float) swapChainExtent.height,
 						0.1f, 10.0f);
-		ubo.proj[1][1] *= -1;
+		gubo.proj[1][1] *= -1;
 
-		//ubo.proj = glm::mat4(1.0);
+		vkMapMemory(device, DS_global.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(gubo), 0, &data);
+		memcpy(data, &gubo, sizeof(gubo));
+		vkUnmapMemory(device, DS_global.uniformBuffersMemory[0][currentImage]);
+	
 		
-		void* data;
-
 		// For the museum walls:
 		ubo.model = glm::mat4(1.0f);
-		/*ubo.model = glm::rotate(glm::mat4(1.0f),
-			time * glm::radians(90.0f),
-			glm::vec3(0.0f, 0.0f, 1.0f));*/
 		vkMapMemory(device, DS_MuseumTri.uniformBuffersMemory[0][currentImage], 0,
 							sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
