@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\julia\VSProjects\MuseumProject\x64\Debug\MuseumProject.exe</FullPath>
+      <FullPath>C:\VulkanSDK\MuseumProject-main\x64\Debug\MuseumProject.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

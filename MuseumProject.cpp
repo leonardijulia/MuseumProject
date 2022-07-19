@@ -81,6 +81,18 @@ class MyProject : public BaseProject {
 	Texture T_Square11;
 	DescriptorSet DS_Square11; // instance DSLobj
 
+	Model M_Text;
+	Texture T_Text;
+	DescriptorSet DS_Text;
+
+	Model M_Text2;
+	Texture T_Text2;
+	DescriptorSet DS_Text2;
+
+	Model M_Text3;
+	Texture T_Text3;
+	DescriptorSet DS_Text3;
+
 	Model M_Sculpture1;
 	Texture T_Sculpture1;
 	DescriptorSet DS_Sculpture1; // instance DSLobj
@@ -96,9 +108,9 @@ class MyProject : public BaseProject {
 		initialBackgroundColor = {1.0f, 1.0f, 1.0f, 1.0f};
 		
 		// Descriptor pool sizes
-		uniformBlocksInPool = 15;
-		texturesInPool = 14;
-		setsInPool = 15;
+		uniformBlocksInPool = 18;
+		texturesInPool = 17;
+		setsInPool = 18;
 	}
 	
 	// Here you load and setup all your Vulkan objects
@@ -220,6 +232,27 @@ class MyProject : public BaseProject {
 						{1, TEXTURE, 0, &T_Square11}
 			});
 
+		M_Text.init(this, "models/Rectangle.obj");
+		T_Text.init(this, "textures/Picasso.png");
+		DS_Text.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text}
+			});
+
+		M_Text2.init(this, "models/Rectangle.obj");
+		T_Text2.init(this, "textures/Munch.png");
+		DS_Text2.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text2}
+			});
+
+		M_Text3.init(this, "models/Rectangle.obj");
+		T_Text3.init(this, "textures/Seurat.png");
+		DS_Text3.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text3}
+			});
+
 		M_Sculpture1.init(this, "models/MOAI.obj");
 		T_Sculpture1.init(this, "textures/Concrete_Roughness.jpg");
 		DS_Sculpture1.init(this, &DSLobj, {
@@ -286,6 +319,18 @@ class MyProject : public BaseProject {
 		DS_Square11.cleanup();
 		T_Square11.cleanup();
 		M_Square11.cleanup();
+
+		DS_Text.cleanup();
+		T_Text.cleanup();
+		M_Text.cleanup();
+
+		DS_Text2.cleanup();
+		T_Text2.cleanup();
+		M_Text2.cleanup();
+
+		DS_Text3.cleanup();
+		T_Text3.cleanup();
+		M_Text3.cleanup();
 
 		M_Sculpture1.cleanup();
 		T_Sculpture1.cleanup();
@@ -475,6 +520,42 @@ class MyProject : public BaseProject {
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square11.indices.size()), 1, 0, 0, 0);
 
+		VkBuffer vertexBuffersText[] = { M_Text.vertexBuffer };
+		VkDeviceSize offsetsText[] = { 0 };
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText, offsetsText);
+		vkCmdBindIndexBuffer(commandBuffer, M_Text.indexBuffer, 0,
+			VK_INDEX_TYPE_UINT32);
+		vkCmdBindDescriptorSets(commandBuffer,
+			VK_PIPELINE_BIND_POINT_GRAPHICS,
+			P1.pipelineLayout, 1, 1, &DS_Text.descriptorSets[currentImage],
+			0, nullptr);
+		vkCmdDrawIndexed(commandBuffer,
+			static_cast<uint32_t>(M_Text.indices.size()), 1, 0, 0, 0);
+
+		VkBuffer vertexBuffersText2[] = { M_Text2.vertexBuffer };
+		VkDeviceSize offsetsText2[] = { 0 };
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText2, offsetsText2);
+		vkCmdBindIndexBuffer(commandBuffer, M_Text2.indexBuffer, 0,
+			VK_INDEX_TYPE_UINT32);
+		vkCmdBindDescriptorSets(commandBuffer,
+			VK_PIPELINE_BIND_POINT_GRAPHICS,
+			P1.pipelineLayout, 1, 1, &DS_Text2.descriptorSets[currentImage],
+			0, nullptr);
+		vkCmdDrawIndexed(commandBuffer,
+			static_cast<uint32_t>(M_Text2.indices.size()), 1, 0, 0, 0);
+
+		VkBuffer vertexBuffersText3[] = { M_Text3.vertexBuffer };
+		VkDeviceSize offsetsText3[] = { 0 };
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText3, offsetsText3);
+		vkCmdBindIndexBuffer(commandBuffer, M_Text3.indexBuffer, 0,
+			VK_INDEX_TYPE_UINT32);
+		vkCmdBindDescriptorSets(commandBuffer,
+			VK_PIPELINE_BIND_POINT_GRAPHICS,
+			P1.pipelineLayout, 1, 1, &DS_Text3.descriptorSets[currentImage],
+			0, nullptr);
+		vkCmdDrawIndexed(commandBuffer,
+			static_cast<uint32_t>(M_Text3.indices.size()), 1, 0, 0, 0);
+
 		VkBuffer vertexBuffersSculpture1[] = { M_Sculpture1.vertexBuffer };
 		VkDeviceSize offsetsSculpture1[] = { 0 };
 		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersSculpture1, offsetsSculpture1);
@@ -623,6 +704,15 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square5.uniformBuffersMemory[0][currentImage]);
+		//Munch text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-4.6f, 1.4f, 3.099f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text2.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text2.uniformBuffersMemory[0][currentImage]);
 		//Picasso
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(1.15f, 1.9f, -0.85f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -632,6 +722,15 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square6.uniformBuffersMemory[0][currentImage]);
+		//Picasso text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(0.41f, 1.23f, -0.85f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text.uniformBuffersMemory[0][currentImage]);
 		//Pisarro
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-6.1f, 1.9f, 3.099f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -650,6 +749,15 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square8.uniformBuffersMemory[0][currentImage]);
+		//Seurat text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-3.5f, 1.4f, 3.099f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text3.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text3.uniformBuffersMemory[0][currentImage]);
 		//VanGogh-night
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-1.2f, 1.9f, -0.86f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
