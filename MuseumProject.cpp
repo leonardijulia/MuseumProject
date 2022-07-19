@@ -15,7 +15,6 @@ struct UniformBufferObject {
 	alignas(16) glm::mat4 model;
 };
 
-
 // MAIN ! 
 class MyProject : public BaseProject {
 	protected:
@@ -93,6 +92,39 @@ class MyProject : public BaseProject {
 	Texture T_Text3;
 	DescriptorSet DS_Text3;
 
+	Model M_Text4;
+	Texture T_Text4;
+	DescriptorSet DS_Text4;
+
+	Model M_Text5;
+	Texture T_Text5;
+	DescriptorSet DS_Text5;
+
+	Model M_Text6;
+	Texture T_Text6;
+	DescriptorSet DS_Text6;
+
+	Model M_Text7;
+	Texture T_Text7;
+	DescriptorSet DS_Text7;
+
+	Model M_Text8;
+	Texture T_Text8;
+	DescriptorSet DS_Text8;
+
+	Model M_Text9;
+	Texture T_Text9;
+	DescriptorSet DS_Text9;
+
+	Model M_Text10;
+	Texture T_Text10;
+	DescriptorSet DS_Text10;
+
+	Model M_Text11;
+	Texture T_Text11;
+	DescriptorSet DS_Text11;
+
+
 	Model M_Sculpture1;
 	Texture T_Sculpture1;
 	DescriptorSet DS_Sculpture1; // instance DSLobj
@@ -108,9 +140,9 @@ class MyProject : public BaseProject {
 		initialBackgroundColor = {1.0f, 1.0f, 1.0f, 1.0f};
 		
 		// Descriptor pool sizes
-		uniformBlocksInPool = 18;
-		texturesInPool = 17;
-		setsInPool = 18;
+		uniformBlocksInPool = 26;
+		texturesInPool = 25;
+		setsInPool = 26;
 	}
 	
 	// Here you load and setup all your Vulkan objects
@@ -253,6 +285,62 @@ class MyProject : public BaseProject {
 						{1, TEXTURE, 0, &T_Text3}
 			});
 
+		M_Text4.init(this, "models/Rectangle.obj");
+		T_Text4.init(this, "textures/Cezanne.png");
+		DS_Text4.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text4}
+			});
+
+		M_Text5.init(this, "models/Rectangle.obj");
+		T_Text5.init(this, "textures/Manet.png");
+		DS_Text5.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text5}
+			});
+
+		M_Text6.init(this, "models/Rectangle.obj");
+		T_Text6.init(this, "textures/Matisse.png");
+		DS_Text6.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text6}
+			});
+
+		M_Text7.init(this, "models/Rectangle.obj");
+		T_Text7.init(this, "textures/Monet.png");
+		DS_Text7.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text7}
+			});
+
+		M_Text8.init(this, "models/Rectangle.obj");
+		T_Text8.init(this, "textures/selfvangogh.png");
+		DS_Text8.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text8}
+			});
+
+		M_Text9.init(this, "models/Rectangle.obj");
+		T_Text9.init(this, "textures/starry_vangogh.png");
+		DS_Text9.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text9}
+			});
+
+		M_Text10.init(this, "models/Rectangle.obj");
+		T_Text10.init(this, "textures/volpedo.png");
+		DS_Text10.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text10}
+			});
+
+		M_Text11.init(this, "models/Rectangle.obj");
+		T_Text11.init(this, "textures/Pisarro.png");
+		DS_Text11.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Text11}
+			});
+
 		M_Sculpture1.init(this, "models/MOAI.obj");
 		T_Sculpture1.init(this, "textures/Concrete_Roughness.jpg");
 		DS_Sculpture1.init(this, &DSLobj, {
@@ -331,6 +419,38 @@ class MyProject : public BaseProject {
 		DS_Text3.cleanup();
 		T_Text3.cleanup();
 		M_Text3.cleanup();
+
+		DS_Text4.cleanup();
+		T_Text4.cleanup();
+		M_Text4.cleanup();
+
+		DS_Text5.cleanup();
+		T_Text5.cleanup();
+		M_Text5.cleanup();
+
+		DS_Text6.cleanup();
+		T_Text6.cleanup();
+		M_Text6.cleanup();
+
+		DS_Text7.cleanup();
+		T_Text7.cleanup();
+		M_Text7.cleanup();
+
+		DS_Text8.cleanup();
+		T_Text8.cleanup();
+		M_Text8.cleanup();
+
+		DS_Text9.cleanup();
+		T_Text9.cleanup();
+		M_Text9.cleanup();
+
+		DS_Text10.cleanup();
+		T_Text10.cleanup();
+		M_Text10.cleanup();
+
+		DS_Text11.cleanup();
+		T_Text11.cleanup();
+		M_Text11.cleanup();
 
 		M_Sculpture1.cleanup();
 		T_Sculpture1.cleanup();
@@ -530,7 +650,8 @@ class MyProject : public BaseProject {
 			P1.pipelineLayout, 1, 1, &DS_Text.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
-			static_cast<uint32_t>(M_Text.indices.size()), 1, 0, 0, 0);
+				static_cast<uint32_t>(M_Text.indices.size()), 1, 0, 0, 0);
+
 
 		VkBuffer vertexBuffersText2[] = { M_Text2.vertexBuffer };
 		VkDeviceSize offsetsText2[] = { 0 };
@@ -542,8 +663,9 @@ class MyProject : public BaseProject {
 			P1.pipelineLayout, 1, 1, &DS_Text2.descriptorSets[currentImage],
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
-			static_cast<uint32_t>(M_Text2.indices.size()), 1, 0, 0, 0);
+				static_cast<uint32_t>(M_Text2.indices.size()), 1, 0, 0, 0);
 
+		
 		VkBuffer vertexBuffersText3[] = { M_Text3.vertexBuffer };
 		VkDeviceSize offsetsText3[] = { 0 };
 		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText3, offsetsText3);
@@ -553,8 +675,104 @@ class MyProject : public BaseProject {
 			VK_PIPELINE_BIND_POINT_GRAPHICS,
 			P1.pipelineLayout, 1, 1, &DS_Text3.descriptorSets[currentImage],
 			0, nullptr);
-		vkCmdDrawIndexed(commandBuffer,
-			static_cast<uint32_t>(M_Text3.indices.size()), 1, 0, 0, 0);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text3.indices.size()), 1, 0, 0, 0);
+		
+			VkBuffer vertexBuffersText4[] = { M_Text4.vertexBuffer };
+			VkDeviceSize offsetsText4[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText4, offsetsText4);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text4.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text4.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text4.indices.size()), 1, 0, 0, 0);
+
+			VkBuffer vertexBuffersText5[] = { M_Text5.vertexBuffer };
+			VkDeviceSize offsetsText5[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText5, offsetsText5);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text5.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text5.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text5.indices.size()), 1, 0, 0, 0);
+
+			VkBuffer vertexBuffersText6[] = { M_Text6.vertexBuffer };
+			VkDeviceSize offsetsText6[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText6, offsetsText6);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text6.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text6.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text6.indices.size()), 1, 0, 0, 0);
+
+			VkBuffer vertexBuffersText7[] = { M_Text7.vertexBuffer };
+			VkDeviceSize offsetsText7[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText7, offsetsText7);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text7.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text7.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text7.indices.size()), 1, 0, 0, 0);
+
+			VkBuffer vertexBuffersText8[] = { M_Text8.vertexBuffer };
+			VkDeviceSize offsetsText8[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText8, offsetsText8);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text8.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text8.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text8.indices.size()), 1, 0, 0, 0);
+
+			VkBuffer vertexBuffersText9[] = { M_Text9.vertexBuffer };
+			VkDeviceSize offsetsText9[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText9, offsetsText9);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text9.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text9.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text9.indices.size()), 1, 0, 0, 0);
+
+			VkBuffer vertexBuffersText10[] = { M_Text10.vertexBuffer };
+			VkDeviceSize offsetsText10[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText10, offsetsText10);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text10.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text10.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text10.indices.size()), 1, 0, 0, 0);
+
+			VkBuffer vertexBuffersText11[] = { M_Text11.vertexBuffer };
+			VkDeviceSize offsetsText11[] = { 0 };
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersText11, offsetsText11);
+			vkCmdBindIndexBuffer(commandBuffer, M_Text11.indexBuffer, 0,
+				VK_INDEX_TYPE_UINT32);
+			vkCmdBindDescriptorSets(commandBuffer,
+				VK_PIPELINE_BIND_POINT_GRAPHICS,
+				P1.pipelineLayout, 1, 1, &DS_Text11.descriptorSets[currentImage],
+				0, nullptr);
+			vkCmdDrawIndexed(commandBuffer,
+				static_cast<uint32_t>(M_Text11.indices.size()), 1, 0, 0, 0);
 
 		VkBuffer vertexBuffersSculpture1[] = { M_Sculpture1.vertexBuffer };
 		VkDeviceSize offsetsSculpture1[] = { 0 };
@@ -568,9 +786,7 @@ class MyProject : public BaseProject {
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Sculpture1.indices.size()), 1, 0, 0, 0);
 
-
 	}
-
 
 	// Here is where you update the uniforms.
 	// Very likely this will be where you will be writing the logic of your application.
@@ -579,6 +795,7 @@ class MyProject : public BaseProject {
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		float time = std::chrono::duration<float, std::chrono::seconds::period>
 					(currentTime - startTime).count();
+		static float debounce = time;
 		
 		const float ROT_SPEED = glm::radians(1.0f);
 		const float MOVE_SPEED = 0.01f;
@@ -614,6 +831,22 @@ class MyProject : public BaseProject {
 		if (glfwGetKey(window, GLFW_KEY_W)) {
 			CamPos -= MOVE_SPEED * glm::vec3(glm::rotate(glm::mat4(1.0f), CamAng.y,
 				glm::vec3(0.0f, 1.0f, 0.0f)) * glm::vec4(0, 0, 1, 1));
+		}
+
+		static int state = 0; // 0 - no text
+							  // 1 - text about art appears
+
+		if (glfwGetKey(window, GLFW_KEY_SPACE)) {
+			if (time - debounce > 0.33) {
+				debounce = time;
+
+				if (state == 0) {
+					state = 1;
+				}
+				else {
+					state = 0;
+				}
+			}
 		}
 
 
@@ -668,6 +901,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square.uniformBuffersMemory[0][currentImage]);
+		//VanGogh text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 1.4f, -0.86f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text8.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text8.uniformBuffersMemory[0][currentImage]);
+		
 		//Manet
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.13f, 1.9f, 3.099f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -677,6 +925,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square2.uniformBuffersMemory[0][currentImage]);
+		//Manet text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.3f, 1.4f, 3.099f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text5.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text5.uniformBuffersMemory[0][currentImage]);
+
 		//Matisse
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-3.3f, 1.9f, -0.86f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -686,6 +949,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square3.uniformBuffersMemory[0][currentImage]);
+		//Matisse text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-3.1f, 1.4f, -0.86f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text6.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text6.uniformBuffersMemory[0][currentImage]);
+
 		//Monet
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-6.1f, 1.9f, -0.86f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -695,6 +973,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square4.uniformBuffersMemory[0][currentImage]);
+		//Monet text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-5.9f, 1.4f, -0.86f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text7.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text7.uniformBuffersMemory[0][currentImage]);
+
 		//Munch
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-4.4f, 1.9f, 3.099f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -707,7 +1000,12 @@ class MyProject : public BaseProject {
 		//Munch text
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-4.6f, 1.4f, 3.099f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
 		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		vkMapMemory(device, DS_Text2.uniformBuffersMemory[0][currentImage], 0,
 			sizeof(ubo), 0, &data);
@@ -725,7 +1023,12 @@ class MyProject : public BaseProject {
 		//Picasso text
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(0.41f, 1.23f, -0.85f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		vkMapMemory(device, DS_Text.uniformBuffersMemory[0][currentImage], 0,
 			sizeof(ubo), 0, &data);
@@ -740,6 +1043,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square7.uniformBuffersMemory[0][currentImage]);
+		//Pisarro text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-6.3f, 1.4f, 3.099f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text11.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text11.uniformBuffersMemory[0][currentImage]);
+
 		//Seurat
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-3.3f, 1.9f, 3.099f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -752,12 +1070,18 @@ class MyProject : public BaseProject {
 		//Seurat text
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-3.5f, 1.4f, 3.099f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
 		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 		vkMapMemory(device, DS_Text3.uniformBuffersMemory[0][currentImage], 0,
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Text3.uniformBuffersMemory[0][currentImage]);
+		
 		//VanGogh-night
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-1.2f, 1.9f, -0.86f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -767,6 +1091,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square9.uniformBuffersMemory[0][currentImage]);
+		//VanGogh-night text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.4f, -0.86f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text9.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text9.uniformBuffersMemory[0][currentImage]);
+
 		//Cezanne
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-1.3f, 1.9f, 3.099f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -776,6 +1115,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square10.uniformBuffersMemory[0][currentImage]);
+		//Cezanne text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-1.5f, 1.4f, 3.099f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text4.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text4.uniformBuffersMemory[0][currentImage]);
+
 		//Volpedo
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(0.3f, 2.2f, 3.08f));
 		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -785,6 +1139,21 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square11.uniformBuffersMemory[0][currentImage]);
+		//Volpedo text
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(0.1f, 1.5f, 3.08f));
+		ubo.model = glm::rotate(ubo.model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		if (state == 0) {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.0f));
+		}
+		else {
+			ubo.model = glm::scale(ubo.model, glm::vec3(0.1f));
+		}
+		ubo.model = glm::rotate(ubo.model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		vkMapMemory(device, DS_Text10.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Text10.uniformBuffersMemory[0][currentImage]);
+
 		//MOAI Sculpture
 		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 1.05f, 0.6f));
 		ubo.model = glm::scale(ubo.model, glm::vec3(2.5f));
