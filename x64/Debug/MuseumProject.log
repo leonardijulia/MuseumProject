@@ -1,19 +1,21 @@
 ﻿  MuseumProject.cpp
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(266,20): warning C4099: 'Model': il nome del tipo che in precedenza utilizzava 'struct' ora utilizza 'class'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(180): message : vedere la dichiarazione di 'Model'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(267,22): warning C4099: 'Texture': il nome del tipo che in precedenza utilizzava 'struct' ora utilizza 'class'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(197): message : vedere la dichiarazione di 'Texture'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(268,23): warning C4099: 'Pipeline': il nome del tipo che in precedenza utilizzava 'struct' ora utilizza 'class'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(228): message : vedere la dichiarazione di 'Pipeline'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(269,34): warning C4099: 'DescriptorSetLayout': il nome del tipo che in precedenza utilizzava 'struct' ora utilizza 'class'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(220): message : vedere la dichiarazione di 'DescriptorSetLayout'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(270,28): warning C4099: 'DescriptorSet': il nome del tipo che in precedenza utilizzava 'struct' ora utilizza 'class'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(249): message : vedere la dichiarazione di 'DescriptorSet'
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(1312,1): warning C4267: 'argomento': conversione da 'size_t' a 'int'. Possibile perdita di dati.
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(1509,39): warning C4267: 'argomento': conversione da 'size_t' a '_Ty'. Possibile perdita di dati.
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(266,20): warning C4099: 'Model': type name first seen using 'struct' now seen using 'class'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(180): message : see declaration of 'Model'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(267,22): warning C4099: 'Texture': type name first seen using 'struct' now seen using 'class'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(197): message : see declaration of 'Texture'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(268,23): warning C4099: 'Pipeline': type name first seen using 'struct' now seen using 'class'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(228): message : see declaration of 'Pipeline'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(269,34): warning C4099: 'DescriptorSetLayout': type name first seen using 'struct' now seen using 'class'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(220): message : see declaration of 'DescriptorSetLayout'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(270,28): warning C4099: 'DescriptorSet': type name first seen using 'struct' now seen using 'class'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(249): message : see declaration of 'DescriptorSet'
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(1312,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(1509,39): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
           with
           [
               _Ty=unsigned int
           ]
-C:\VulkanSDK\MuseumProject-main\MuseumProject.hpp(1803,48): warning C4267: '=': conversione da 'size_t' a 'uint32_t'. Possibile perdita di dati.
-  MuseumProject.vcxproj -> C:\VulkanSDK\MuseumProject-main\x64\Debug\MuseumProject.exe
+C:\Users\julia\VSProjects\MuseumProject\MuseumProject.hpp(1803,48): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+  LINK : C:\Users\julia\VSProjects\MuseumProject\x64\Debug\MuseumProject.exe not found or not built by the last incremental link; performing full link
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  MuseumProject.vcxproj -> C:\Users\julia\VSProjects\MuseumProject\x64\Debug\MuseumProject.exe
