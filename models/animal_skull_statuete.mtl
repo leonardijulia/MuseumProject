@@ -1,0 +1,36 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 14.05.2021 14:35:51
+
+newmtl metal_Mat
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka metal_Mat_Diffuse.png
+	map_Kd metal_Mat_Diffuse.png
+	map_Ks metal_Mat_Specular.png
+	map_bump metal_Mat_Normal.png
+	bump metal_Mat_Normal.png
+
+newmtl statuete_Mat
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.000000 0.000000 0.000000
+	map_Ka statuete_Mat_Diffuse.png
+	map_Kd statuete_Mat_Diffuse.png
+	map_Ks statuete_Mat_Specular.png
+	map_bump statuete_Mat_Normal.png
+	bump statuete_Mat_Normal.png

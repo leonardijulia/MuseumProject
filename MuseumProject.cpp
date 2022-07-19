@@ -81,20 +81,24 @@ class MyProject : public BaseProject {
 	Texture T_Square11;
 	DescriptorSet DS_Square11; // instance DSLobj
 
+	Model M_Sculpture1;
+	Texture T_Sculpture1;
+	DescriptorSet DS_Sculpture1; // instance DSLobj
+
 	DescriptorSet DS_global;
 
 	// Here you set the main application parameters
 	void setWindowParameters() {
 		// window size, titile and initial background
-		windowWidth = 800;
-		windowHeight = 600;
+		windowWidth = 2000;
+		windowHeight = 1500;
 		windowTitle = "Museum Project";
 		initialBackgroundColor = {1.0f, 1.0f, 1.0f, 1.0f};
 		
 		// Descriptor pool sizes
-		uniformBlocksInPool = 14;
-		texturesInPool = 13;
-		setsInPool = 14;
+		uniformBlocksInPool = 15;
+		texturesInPool = 14;
+		setsInPool = 15;
 	}
 	
 	// Here you load and setup all your Vulkan objects
@@ -216,6 +220,13 @@ class MyProject : public BaseProject {
 						{1, TEXTURE, 0, &T_Square11}
 			});
 
+		M_Sculpture1.init(this, "models/MOAI.obj");
+		T_Sculpture1.init(this, "textures/Concrete_Roughness.jpg");
+		DS_Sculpture1.init(this, &DSLobj, {
+						{0, UNIFORM, sizeof(UniformBufferObject), nullptr},
+						{1, TEXTURE, 0, &T_Sculpture1}
+			});
+
 		DS_global.init(this, &DSLglobal, {
 						{0, UNIFORM, sizeof(globalUniformBufferObject), nullptr},
 			});
@@ -275,6 +286,10 @@ class MyProject : public BaseProject {
 		DS_Square11.cleanup();
 		T_Square11.cleanup();
 		M_Square11.cleanup();
+
+		M_Sculpture1.cleanup();
+		T_Sculpture1.cleanup();
+		DS_Sculpture1.cleanup();
 
 		DS_global.cleanup();
 
@@ -459,6 +474,19 @@ class MyProject : public BaseProject {
 			0, nullptr);
 		vkCmdDrawIndexed(commandBuffer,
 			static_cast<uint32_t>(M_Square11.indices.size()), 1, 0, 0, 0);
+
+		VkBuffer vertexBuffersSculpture1[] = { M_Sculpture1.vertexBuffer };
+		VkDeviceSize offsetsSculpture1[] = { 0 };
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffersSculpture1, offsetsSculpture1);
+		vkCmdBindIndexBuffer(commandBuffer, M_Sculpture1.indexBuffer, 0,
+			VK_INDEX_TYPE_UINT32);
+		vkCmdBindDescriptorSets(commandBuffer,
+			VK_PIPELINE_BIND_POINT_GRAPHICS,
+			P1.pipelineLayout, 1, 1, &DS_Sculpture1.descriptorSets[currentImage],
+			0, nullptr);
+		vkCmdDrawIndexed(commandBuffer,
+			static_cast<uint32_t>(M_Sculpture1.indices.size()), 1, 0, 0, 0);
+
 
 	}
 
@@ -649,6 +677,13 @@ class MyProject : public BaseProject {
 			sizeof(ubo), 0, &data);
 		memcpy(data, &ubo, sizeof(ubo));
 		vkUnmapMemory(device, DS_Square11.uniformBuffersMemory[0][currentImage]);
+		//MOAI Sculpture
+		ubo.model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f, 1.05f, 0.6f));
+		ubo.model = glm::scale(ubo.model, glm::vec3(2.5f));
+		vkMapMemory(device, DS_Sculpture1.uniformBuffersMemory[0][currentImage], 0,
+			sizeof(ubo), 0, &data);
+		memcpy(data, &ubo, sizeof(ubo));
+		vkUnmapMemory(device, DS_Sculpture1.uniformBuffersMemory[0][currentImage]);
 
 	}	
 };
